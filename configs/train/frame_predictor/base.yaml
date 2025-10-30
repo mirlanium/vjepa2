@@ -1,0 +1,40 @@
+app: frame_predictor
+folder: /path/to/save/checkpoints
+meta:
+  dtype: bfloat16
+  use_sdpa: true
+  seed: 42
+model:
+  model_name: vit_base
+  pred_depth: 12
+  pred_embed_dim: 768
+  pred_num_heads: 12
+  uniform_power: true
+  use_activation_checkpointing: true
+  use_rope: true
+data:
+  batch_size: 32
+  crop_size: 224
+  datasets:
+    - /path/to/your/video/dataset  # Should be a CSV file with video paths
+  dataset_fpcs:
+    - 8  # 8 frames per clip
+  fps: 4
+  num_workers: 8
+  patch_size: 16
+  tubelet_size: 2
+data_aug:
+  horizontal_flip: true
+  auto_augment: false
+loss:
+  loss_exp: 1.0
+  normalize_reps: true
+optimization:
+  epochs: 100
+  warmup: 5
+  anneal: 0
+  lr: 1e-3
+  start_lr: 1e-4
+  final_lr: 0.0
+  weight_decay: 1e-6
+  final_weight_decay: 1e-6
